@@ -82,6 +82,9 @@ jobs:
             echo "" >report.EN.md
           fi
 
+          echo "Creating release notes directory for version ${RELEASE_VERSION}..."
+          mkdir -p release-notes/${RELEASE_VERSION}
+
           echo "# ${REPORT_TITLE}" >>release-notes/${RELEASE_VERSION}/README_ZH.md
           sed 's/# Release Notes//' report.md >>release-notes/${RELEASE_VERSION}/README_ZH.md
 
