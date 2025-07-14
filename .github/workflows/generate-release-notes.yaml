@@ -104,7 +104,6 @@ jobs:
       - name: Clean
         run: |
           rm generate_release_report.sh
-          rm github-mcp-serve
           rm -rf higress-report-agent
 
       - name: Create Pull Request
