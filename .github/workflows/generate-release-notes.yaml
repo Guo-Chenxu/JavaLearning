@@ -42,10 +42,6 @@ jobs:
       - name: Clone Higress Report Agent
         run: |
           git clone https://github.com/higress-group/higress-report-agent.git
-          cd higress-report-agent
-          pip install uv
-          uv sync
-          cd ..
           mv github-mcp-serve higress-report-agent/
 
       - name: Create Release Report Script
@@ -74,6 +70,7 @@ jobs:
             if [ -n "$PR_NUMS" ]; then
               echo "Generating detailed release notes for ${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}..."
               cd higress-report-agent
+              pip install uv
               uv sync
               python report_main.py --mode 2 --choice 2 --pr_nums ${PR_NUMS}
               cp report.md ../
@@ -102,7 +99,6 @@ jobs:
           GITHUB_PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           REPORT_TITLE: Java Learning
         run: |
-          uv -v
           bash generate_release_report.sh
 
       - name: Clean
