@@ -72,7 +72,7 @@ jobs:
               cd higress-report-agent
               pip install uv
               uv sync
-              python report_main.py --mode 2 --choice 2 --pr_nums ${PR_NUMS}
+              uv report_main.py --mode 2 --choice 2 --pr_nums ${PR_NUMS}
               cp report.md ../
               cp report.EN.md ../
               cd ..
