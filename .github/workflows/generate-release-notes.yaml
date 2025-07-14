@@ -34,16 +34,17 @@ jobs:
           cd ..
           chmod u+x github-mcp-server
 
-      - name: Setup Python with uv
+      - name: Setup Python
         uses: actions/setup-python@v4
         with:
           python-version: "3.10"
-        run: |
-          pip install uv
-
+      
       - name: Clone Higress Report Agent
         run: |
           git clone https://github.com/higress-group/higress-report-agent.git
+          cd higress-report-agent
+          pip install uv
+          uv sync
           mv github-mcp-server higress-report-agent/
 
       - name: Create Release Report Script
