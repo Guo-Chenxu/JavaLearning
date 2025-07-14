@@ -30,9 +30,9 @@ jobs:
         run: |
           git clone https://github.com/github/github-mcp-server.git
           cd github-mcp-server
-          go build -o ../github-mcp-server ./cmd/github-mcp-server
+          go build -o ../github-mcp-serve ./cmd/github-mcp-server
           cd ..
-          chmod u+x github-mcp-server
+          chmod u+x github-mcp-serve
 
       - name: Setup Python
         uses: actions/setup-python@v4
@@ -45,7 +45,8 @@ jobs:
           cd higress-report-agent
           pip install uv
           uv sync
-          mv github-mcp-server higress-report-agent/
+          cd ..
+          mv github-mcp-serve higress-report-agent/
 
       - name: Create Release Report Script
         run: |
