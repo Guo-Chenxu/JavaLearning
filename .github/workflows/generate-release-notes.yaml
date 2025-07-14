@@ -91,6 +91,8 @@ jobs:
           echo "# ${REPORT_TITLE}" >>release-notes/${RELEASE_VERSION}/README.md
           sed 's/# Release Notes//' report.EN.md >>release-notes/${RELEASE_VERSION}/README.md
 
+          rm report.md
+          rm report.EN.md
           echo "${REPORT_TITLE} release notes saved to release-notes/${RELEASE_VERSION}/"
           EOF
           chmod +x generate_release_report.sh
@@ -108,6 +110,7 @@ jobs:
         run: |
           rm generate_release_report.sh
           rm -rf higress-report-agent
+          rm -rf github-mcp-server
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v7
