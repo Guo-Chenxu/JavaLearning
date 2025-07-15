@@ -96,7 +96,7 @@ jobs:
           rm report.md
           rm report.EN.md
           echo "${REPORT_TITLE} release notes saved to release-notes/${CLEAN_VERSION}/"
-
+          
           EOF
           chmod +x generate_release_report.sh
 
