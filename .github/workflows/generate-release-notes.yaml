@@ -41,7 +41,7 @@ jobs:
 
       - name: Clone Higress Report Agent
         run: |
-          git clone https://github.com/Guo-Chenxu/higress-report-agent.git
+          git clone https://github.com/higress-group/higress-report-agent.git
           mv github-mcp-serve higress-report-agent/
 
       - name: Create Release Report Script
@@ -54,11 +54,8 @@ jobs:
           curl -L \
               "https://github.com/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/releases/tag/${RELEASE_VERSION}" \
               -o release_page.html
-              "https://github.com/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/releases/tag/${RELEASE_VERSION}" \
-              -o release_page.html
 
           echo "Extracting PR numbers from ${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME} release notes..."
-          PR_NUMS=$(cat release_page.html | grep -o "/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/pull/[0-9]*" | grep -o "[0-9]*$" | sort -n | uniq | tr '\n' ',')
           PR_NUMS=$(cat release_page.html | grep -o "/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/pull/[0-9]*" | grep -o "[0-9]*$" | sort -n | uniq | tr '\n' ',')
           PR_NUMS=${PR_NUMS%,}
 
@@ -68,31 +65,9 @@ jobs:
 
           rm release_page.html
 
-          echo "Identifying important PRs..."
-          IMPORTANT_PR_NUMS=$(cat release_page.html | grep -o "<strong>.*/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/pull/[0-9]*.*</strong>" | grep -o "pull/[0-9]*" | grep -o "[0-9]*" | sort -n | uniq | tr '\n' ',')
-          IMPORTANT_PR_NUMS=${IMPORTANT_PR_NUMS%,}
-
-          rm release_page.html
-
           echo "Extracted PR numbers for ${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}: ${PR_NUMS}"
           echo "Important PR numbers: ${IMPORTANT_PR_NUMS}"
-          echo "Important PR numbers: ${IMPORTANT_PR_NUMS}"
 
-          echo "Generating detailed release notes for ${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}..."
-          cd higress-report-agent
-          pip install uv
-          uv sync
-          if [ -n "${IMPORTANT_PR_NUMS}" ]; then
-              uv run report_main.py --mode 2 --choice 2 --pr_nums ${PR_NUMS} --important_prs ${IMPORTANT_PR_NUMS}
-          else
-              uv run report_main.py --mode 2 --choice 2 --pr_nums ${PR_NUMS}
-          fi
-          cp report.md ../
-          cp report.EN.md ../
-          cd ..
-
-          # 去除版本号前缀v
-          CLEAN_VERSION=${RELEASE_VERSION#v}
           echo "Generating detailed release notes for ${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}..."
           cd higress-report-agent
           pip install uv
@@ -114,13 +89,7 @@ jobs:
 
           echo "# ${REPORT_TITLE}" >>release-notes/${CLEAN_VERSION}/README_ZH.md
           sed 's/# Release Notes//' report.md >>release-notes/${CLEAN_VERSION}/README_ZH.md
-          mkdir -p release-notes/${CLEAN_VERSION}
 
-          echo "# ${REPORT_TITLE}" >>release-notes/${CLEAN_VERSION}/README_ZH.md
-          sed 's/# Release Notes//' report.md >>release-notes/${CLEAN_VERSION}/README_ZH.md
-
-          echo "# ${REPORT_TITLE}" >>release-notes/${CLEAN_VERSION}/README.md
-          sed 's/# Release Notes//' report.EN.md >>release-notes/${CLEAN_VERSION}/README.md
           echo "# ${REPORT_TITLE}" >>release-notes/${CLEAN_VERSION}/README.md
           sed 's/# Release Notes//' report.EN.md >>release-notes/${CLEAN_VERSION}/README.md
 
@@ -153,13 +122,11 @@ jobs:
         run: |
           rm generate_release_report.sh
           rm -rf higress-report-agent
-          rm -rf github-mcp-server
-          rm -rf github-mcp-server
+          rm -rf github-mcp-serve
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v7
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
           token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: "Add release notes"
           branch: add-release-notes
