@@ -100,12 +100,21 @@ jobs:
           EOF
           chmod +x generate_release_report.sh
 
-      - name: Generate Release Notes for Java Learning
+      - name: Generate Release Notes for Higress Core
         env:
-          GITHUB_REPO_OWNER: Guo-Chenxu
-          GITHUB_REPO_NAME: JavaLearning
+          GITHUB_REPO_OWNER: alibaba
+          GITHUB_REPO_NAME: higress
           GITHUB_PERSONAL_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          REPORT_TITLE: Java Learning
+          REPORT_TITLE: Higress Core
+        run: |
+          bash generate_release_report.sh
+
+      - name: Generate Release Notes for Higress Console
+        env:
+          GITHUB_REPO_OWNER: higress-group
+          GITHUB_REPO_NAME: higress-console
+          GITHUB_PERSONAL_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPORT_TITLE: Higress Console
         run: |
           bash generate_release_report.sh
 
