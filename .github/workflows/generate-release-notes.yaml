@@ -115,7 +115,7 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v7
         with:
-          token: ${{ secrets.TOKEN }}
+          token: ${{ secrets.GITUHB_TOKEN }}
           commit-message: "Add release notes"
           branch: add-release-notes
           title: "Add release notes"
