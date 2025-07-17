@@ -16,7 +16,7 @@ jobs:
       RELEASE_VERSION: ${{ github.ref_name }}
 
     steps:
-      - name: Checkout Higress code
+      - name: Checkout code
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
@@ -113,7 +113,7 @@ jobs:
 
       - name: Create Update Release Notes Script
         run: |
-          cat <<EOF > update_release_note.sh
+          cat > update_release_note.sh << 'EOF'
           #!/bin/bash
           CLEAN_VERSION=${RELEASE_VERSION#v}
          
