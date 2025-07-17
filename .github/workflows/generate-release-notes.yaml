@@ -41,7 +41,7 @@ jobs:
 
       - name: Clone Higress Report Agent
         run: |
-          git clone https://github.com/higress-group/higress-report-agent.git
+          git clone https://github.com/Guo-Chenxu/higress-report-agent.git
           mv github-mcp-serve higress-report-agent/
 
       - name: Create Release Report Script
