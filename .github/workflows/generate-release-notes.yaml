@@ -109,9 +109,9 @@ jobs:
           GITHUB_REPO_NAME: JavaLearning
           GITHUB_PERSONAL_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPORT_TITLE: JavaLearning
-          RELEASE_VERSION: $(cat ${GITHUB_WORKSPACE}/VERSION)
-          DEP_VERSION: $(cat ${GITHUB_WORKSPACE}/DEP_VERSION | sed 's/higress-console: //')
         run: |
+          export RELEASE_VERSION=$(cat ${GITHUB_WORKSPACE}/VERSION)
+          export DEP_VERSION=$(cat ${GITHUB_WORKSPACE}/DEP_VERSION | sed 's/higress-console: //')
           bash generate_release_report.sh
 
       - name: Create Update Release Notes Script
@@ -138,15 +138,15 @@ jobs:
               -d "{\"tag_name\":\"${RELEASE_VERSION}\",\"name\":\"${RELEASE_VERSION}\",\"body\":\"${RELEASE_NOTES}\",\"draft\":false,\"prerelease\":false}"
 
           EOF
-          chmod +x generate_release_report.sh
+          chmod +x update_release_note.sh
 
       - name: Update Release Notes
         env:
           GITHUB_REPO_OWNER: Guo-Chenxu
           GITHUB_REPO_NAME: JavaLearning
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          RELEASE_VERSION: $(cat ${GITHUB_WORKSPACE}/VERSION)
         run: |
+          export RELEASE_VERSION=$(cat ${GITHUB_WORKSPACE}/VERSION)
           bash update_release_note.sh
 
       - name: Clean
