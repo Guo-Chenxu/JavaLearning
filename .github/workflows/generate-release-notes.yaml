@@ -109,6 +109,7 @@ jobs:
           REPORT_TITLE: JavaLearning
         run: |
           export RELEASE_VERSION=$(cat ${GITHUB_WORKSPACE}/VERSION)
+          export DEP_VERSION=$(grep "^higress-console:" ${GITHUB_WORKSPACE}/DEP_VERSION | head -n1 | sed 's/higress-console: //')
           echo "github.workspace: ${{ github.workspace }}"
           echo "GITHUB_WORKSPACE: $GITHUB_WORKSPACE"
           echo "PWD: $PWD"
