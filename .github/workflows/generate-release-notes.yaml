@@ -48,8 +48,6 @@ jobs:
           cat > generate_release_report.sh << 'EOF'
           #!/bin/bash
           # Script to generate release notes for Higress projects
-          echo $RELEASE_VERSION
-          echo $DEP_VERSION
 
           echo "Fetching GitHub generated release notes for ${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}..."
           curl -L \
@@ -111,7 +109,9 @@ jobs:
           REPORT_TITLE: JavaLearning
         run: |
           export RELEASE_VERSION=$(cat ${GITHUB_WORKSPACE}/VERSION)
-          export DEP_VERSION=$(cat ${GITHUB_WORKSPACE}/DEP_VERSION | sed 's/higress-console: //')
+          echo "github.workspace: ${{ github.workspace }}"
+          echo "GITHUB_WORKSPACE: $GITHUB_WORKSPACE"
+          echo "PWD: $PWD"
           bash generate_release_report.sh
 
       - name: Create Update Release Notes Script
