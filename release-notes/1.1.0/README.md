@@ -504,4 +504,71 @@ This release contains **8** updates, covering areas such as feature enhancements
 
 **Total**: 8 changes
 
-Thank you to all contributors for your hard work! 🎉
+Thank you to all contributors for your hard work! 🎉# JavaLearning
+
+
+## 📋 Overview of This Release
+
+This release includes **2** updates, covering areas such as feature enhancements, bug fixes, and performance optimizations.
+
+### Update Distribution
+
+- **Documentation Updates**: 1 item
+- **Test Improvements**: 1 item
+
+### ⭐ Key Highlights
+
+This release includes **1** important update, which is recommended to be closely monitored:
+
+- **Ci** ([#11](https://github.com/Guo-Chenxu/JavaLearning/pull/11)): Increased the automation level of the release process, reduced manual intervention, and improved development efficiency and accuracy.
+
+For more details, please refer to the section below on key features.
+
+---
+
+## 🌟 Detailed Description of Key Features
+
+The following are detailed explanations of the key features and improvements in this release:
+
+### 1. Ci
+
+**Related PR**: [#11](https://github.com/Guo-Chenxu/JavaLearning/pull/11) | **Contributor**: [Guo-Chenxu](https://github.com/Guo-Chenxu)
+
+**Usage Background**
+
+This PR mainly addresses redundant file handling and security configuration issues in the continuous integration (CI) process. In previous workflows, temporary files were not properly cleaned up after generating release notes, which could lead to wasted disk space or residual data interfering with subsequent builds. Additionally, an ambiguous environment variable name `TOKEN` was used, which might cause confusion or permission issues. The target users are developers and operations teams, especially those responsible for version releases and CI/CD processes.
+
+**Feature Details**
+
+This PR modified `.github/workflows/generate-release-notes.yaml`, adding operations to delete `report.md`, `report.EN.md`, and the `github-mcp-server` directory to clean up temporary files generated during the process. At the same time, the `token` parameter was changed from `secrets.TOKEN` to `secrets.GITUHB_TOKEN`, likely a typo correction, ensuring the correct credentials are used when calling the GitHub API. These changes fall under code refactoring, aiming to improve the robustness and maintainability of the process and avoid potential security risks.
+
+**Usage Method**
+
+This feature does not require manual activation; it is already integrated into the CI workflow. Developers only need to submit code to the specified branch, and the CI system will automatically execute tasks such as generating release notes and creating pull requests. Typical scenarios include automatically generating documentation and creating pull requests after each version release. Notes to consider include ensuring that the `GITUHB_TOKEN` environment variable is correctly configured and has sufficient permissions to create pull requests. It is recommended to verify the process in a test environment before deploying to production.
+
+**Feature Value**
+
+This PR improves the efficiency and security of the CI process by cleaning up redundant files and fixing credential configurations. It reduces unnecessary resource consumption and lowers the risk of build errors caused by residual files. At the same time, it corrects potentially confusing variable names, improving code readability and maintainability. For projects relying on automated release processes, this improvement helps achieve a more stable, reliable, and manageable continuous delivery system, enhancing collaboration efficiency within the entire development ecosystem.
+
+---
+
+## 📝 Full Change Log
+
+### 📚 Documentation Updates (Documentation)
+
+- **Related PR**: [#10](https://github.com/Guo-Chenxu/JavaLearning/pull/10)
+  **Contributor**: Guo-Chenxu
+  **Change Log**: This PR added version release notes, including Chinese and English README files, documenting the update content and distribution of this release.
+  **Feature Value**: Provides users with clear version update information, helping them understand new features and improvements, thus enhancing the user experience.
+
+---
+
+## 📊 Release Statistics
+
+- 📚 Documentation Updates: 1 item
+- 🧪 Test Improvements: 1 item
+
+**Total**: 2 changes (including 1 important update)
+
+Thank you to all contributors for their hard work! 🎉
+
