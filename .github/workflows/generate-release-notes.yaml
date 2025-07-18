@@ -13,7 +13,6 @@ jobs:
       DASHSCOPE_API_KEY: ${{ secrets.DASHSCOPE_API_KEY }}
       MODEL_NAME: ${{ secrets.MODEL_NAME }}
       MODEL_SERVER: ${{ secrets.MODEL_SERVER }}
-      RELEASE_VERSION: ${{ github.ref_name }}
 
     steps:
       - name: Checkout code
@@ -49,6 +48,8 @@ jobs:
           cat > generate_release_report.sh << 'EOF'
           #!/bin/bash
           # Script to generate release notes for Higress projects
+          echo $RELEASE_VERSION
+          echo $DEP_VERSION
 
           echo "Fetching GitHub generated release notes for ${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}..."
           curl -L \
@@ -108,6 +109,8 @@ jobs:
           GITHUB_REPO_NAME: JavaLearning
           GITHUB_PERSONAL_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPORT_TITLE: JavaLearning
+          RELEASE_VERSION: $(cat ${GITHUB_WORKSPACE}/VERSION)
+          DEP_VERSION: $(cat ${GITHUB_WORKSPACE}/DEP_VERSION | sed 's/higress-console: //')
         run: |
           bash generate_release_report.sh
 
@@ -116,16 +119,16 @@ jobs:
           cat > update_release_note.sh << 'EOF'
           #!/bin/bash
           CLEAN_VERSION=${RELEASE_VERSION#v}
-         
+
           RELEASE_INFO=$(curl -s -L \
             -H "Accept: application/vnd.github+json" \
             -H "Authorization: Bearer ${GITHUB_TOKEN}" \
             -H "X-GitHub-Api-Version: 2022-11-28" \
             https://api.github.com/repos/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/releases/tags/${RELEASE_VERSION})
           RELEASE_ID=$(echo $RELEASE_INFO | jq -r .id)
-         
+
           RELEASE_NOTES=$(cat release-notes/${CLEAN_VERSION}/README.md | awk '{printf "%s\\r\\n", $0}')
-         
+
           curl -L \
               -X PATCH \
               -H "Accept: application/vnd.github+json" \
@@ -133,7 +136,7 @@ jobs:
               -H "X-GitHub-Api-Version: 2022-11-28" \
               https://api.github.com/repos/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/releases/${RELEASE_ID} \
               -d "{\"tag_name\":\"${RELEASE_VERSION}\",\"name\":\"${RELEASE_VERSION}\",\"body\":\"${RELEASE_NOTES}\",\"draft\":false,\"prerelease\":false}"
-          
+
           EOF
           chmod +x generate_release_report.sh
 
@@ -142,6 +145,7 @@ jobs:
           GITHUB_REPO_OWNER: Guo-Chenxu
           GITHUB_REPO_NAME: JavaLearning
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_VERSION: $(cat ${GITHUB_WORKSPACE}/VERSION)
         run: |
           bash update_release_note.sh
 
