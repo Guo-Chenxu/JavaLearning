@@ -127,7 +127,9 @@ jobs:
             https://api.github.com/repos/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/releases/tags/${RELEASE_VERSION})
           RELEASE_ID=$(echo $RELEASE_INFO | jq -r .id)
 
-          RELEASE_NOTES=$(cat release-notes/${CLEAN_VERSION}/README.md | awk '{printf "%s\\r\\n", $0}')
+          RELEASE_NOTES=$(cat release-notes/${CLEAN_VERSION}/README.md | awk '{printf "%s\\n", $0}')
+
+          echo "RELEASE_NOTES: $RELEASE_NOTES"
 
           curl -L \
               -X PATCH \
